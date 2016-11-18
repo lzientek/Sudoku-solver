@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SudokuSolver.Solver;
+﻿using SudokuSolver.Solver;
 
 namespace SudokuSolver
 {
@@ -19,10 +14,6 @@ namespace SudokuSolver
             var table = new SudokuTable(file);
             var solver = new  Solver.SudokuSolver(table);
             solver.Solve();
-
-
-            table.DisplayConsole();
-            Console.ReadLine();
         }
     }
 }

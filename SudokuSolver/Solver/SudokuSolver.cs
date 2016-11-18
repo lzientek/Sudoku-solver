@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SudokuSolver.Solver
 {
@@ -35,6 +32,7 @@ namespace SudokuSolver.Solver
             }
             finally
             {
+                Table.DisplayConsole();
                 Console.WriteLine("solved in {0}ms", (_endTime -_starTime).Milliseconds);
             }
 
@@ -57,7 +55,7 @@ namespace SudokuSolver.Solver
             return result;
         }
 
-        private void RecursiveFind()
+        private void RecursiveFind(int numberOfDepth = 0)
         {
             bool solved = true;
 
@@ -73,9 +71,42 @@ namespace SudokuSolver.Solver
                 }
             }
 
-            if (!solved)
+            if (!solved && numberOfDepth < 81)
             {
-                RecursiveFind();
+                RecursiveFind(numberOfDepth + 1);
+            } else if (!solved) {
+                TestAllPosibilities();
+                solved = true;
+            }
+        }
+
+        private void TestAllPosibilities()
+        {
+            for (int i = 0; i < Table.Lenght; i++)
+            {
+                for (int j = 0; j < Table.Lenght; j++)
+                {
+                    if (!Table[i, j].HasAValue)
+                    {
+                        SearchPossibleValues(Table[i, j]);
+                        foreach (int k in Table[i, j].PossibleValues){
+                            var table = Table.Clone();
+                            Table[i, j].Value = k;
+                            var isOk = true;
+                            try {
+                                RecursiveFind();
+                            } catch(Exception ex) {
+                                isOk = false;
+                            }
+                            if(isOk) {
+                                throw new Exception("Finised");
+                            } else {
+                                Table = table;
+                            }
+                        }
+
+                    }
+                }
             }
         }
 

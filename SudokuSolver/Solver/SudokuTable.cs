@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SudokuSolver.Solver
 {
@@ -87,7 +84,24 @@ namespace SudokuSolver.Solver
             SudokuTableItems = items;
         }
 
+        private SudokuTable()
+        {
+            InitTableArray();            
+        }
+
         public SudokuTableItem this[int y,int x] => SudokuTableItems[y][x];
+
+        public SudokuTable Clone() {
+            var ret =  new SudokuTable();
+            for (int i = 0; i < SudokuTableItems.Count(); i++)
+            {
+                for (int j = 0; j < SudokuTableItems[i].Count(); j++)
+                {
+                    ret.SudokuTableItems[i][j] =new SudokuTableItem(SudokuTableItems[i][j].Value, SudokuTableItems[i][j].PositionX,SudokuTableItems[i][j].PositionY);
+                }
+            }
+            return ret;
+        }
 
         public void DisplayConsole()
         {
